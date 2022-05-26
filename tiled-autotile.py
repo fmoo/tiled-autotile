@@ -161,8 +161,8 @@ class Layout(Enum):
         self.height_tiled_px = self.height_tiled * TILE_SIZE
 
 
-def run():
-    layout_label = os.path.splitext(sys.argv[1])[0][-2:]
+def run(fn):
+    layout_label = os.path.splitext(fn)[0][-2:]
     if layout_label == 'A1':
         layout = Layout.A1
     elif layout_label == 'A2':
@@ -175,9 +175,9 @@ def run():
         layout = None
         print('Unsupported layout: "{}"'.format(layout_label))
         exit(1)
-    source = Image.open(sys.argv[1])
+    source = Image.open(fn)
     target = unpack(source, layout)
-    filename = '_unpacked'.join(os.path.splitext(sys.argv[1]))
+    filename = '_unpacked'.join(os.path.splitext(fn))
     target.save(filename)
 
 
@@ -255,4 +255,6 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Usage: {} input_file".format(sys.argv[0]))
         exit(1)
-    run()
+    for arg in sys.argv[1:]:
+        run(arg)
+
